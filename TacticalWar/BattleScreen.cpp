@@ -5,6 +5,8 @@ using namespace tw;
 
 BattleScreen::BattleScreen(tgui::Gui * gui)
 {
+	gui->removeAllWidgets();
+	
 	renderer = new IsometricRenderer(NULL);
 	environment = new Environment(11, 5, 0);
 	environment->getMapData(2, 2)->setIsObstacle(true);
@@ -20,7 +22,7 @@ BattleScreen::BattleScreen(tgui::Gui * gui)
 	testDirection = false;
 	setNextPosition();
 
-	font.loadFromFile("../assets/font/arial.ttf");
+	font.loadFromFile("./assets/font/arial.ttf");
 	FPS.setFont(font);
 
 	tgui::Button::Ptr button = tgui::Button::create();
@@ -45,6 +47,8 @@ void BattleScreen::handleEvents(sf::RenderWindow * window, tgui::Gui * gui)
 
 void BattleScreen::update(float deltatime)
 {
+	Screen::update(deltatime);
+
 	std::vector<Point2D> pathZone;
 	for (int i = 0; i < characters.size(); i++)
 	{
@@ -74,6 +78,6 @@ void BattleScreen::update(float deltatime)
 void BattleScreen::render(sf::RenderWindow * window)
 {
 	renderer->modifyWindow(window);
-	renderer->render(environment, characters);
+	renderer->render(environment, characters, getDeltatime());
 	window->draw(FPS);
 }

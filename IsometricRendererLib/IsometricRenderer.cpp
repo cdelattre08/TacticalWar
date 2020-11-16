@@ -67,7 +67,7 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 	}
 }
 
-void IsometricRenderer::render(Environment* environment, std::vector<BaseCharacterModel*> & characters)
+void IsometricRenderer::render(Environment* environment, std::vector<BaseCharacterModel*> & characters, float deltatime)
 {
 	manageEvents(environment, characters);
 	// TODO (team "Rendu graphique") : Réaliser le code de dessin de l'environnement (la map) et des personnages dans un repère isométrique.
@@ -113,7 +113,8 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 	for (int i = 0; i < characters.size(); i++)
 	{
 		BaseCharacterModel * m = characters[i];
-		CharacterView v(m);
+		CharacterView & v = getCharacterView(m);
+		v.update(deltatime);
 		sf::Sprite * s = v.getImageToDraw();
 		s->setPosition(m->getInterpolatedX() * 64, m->getInterpolatedY() * 64);
 
@@ -124,4 +125,15 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 		s->setScale(scaleX, scaleY);
 		window->draw(*s);
 	}
+}
+
+
+CharacterView & IsometricRenderer::getCharacterView(BaseCharacterModel * model)
+{
+	if (characterViewsCache.find(model) == characterViewsCache.end())
+	{
+		characterViewsCache[model] = new CharacterView(model);
+	}
+
+	return *characterViewsCache[model];
 }

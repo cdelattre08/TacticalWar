@@ -28,7 +28,7 @@ sf::Texture* CharacterView::getCachedTexture(std::string path)
 CharacterView::CharacterView(BaseCharacterModel * model)
 	: AbstractCharacterView<sf::Sprite*>(model)
 {
-	testCharacterTexture = getCachedTexture("../assets/Warrior/bottomright-sheet.png");
+	testCharacterTexture = getCachedTexture("./assets/Warrior/bottomright-sheet.png");
 	//testCharacterTexture = new sf::Texture();
 	//testCharacterTexture->loadFromFile("../assets/Warrior/bottomright-sheet.png");
 	testCharacterTexture->setSmooth(true);

@@ -59,3 +59,5 @@ MatchmakingLib/x64/
 TacticalWarBattleLib/x64/
 ColorisationTestModule/x64/
 EnvironmentPersistanceLib/x64/
+x64/Debug/assets
+x64/Release/assets

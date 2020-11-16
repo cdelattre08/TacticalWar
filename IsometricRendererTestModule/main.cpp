@@ -12,6 +12,7 @@ using namespace tw;
 int main(int argc, char** argv)
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Isometric renderer test module");
+	sf::Clock deltaClock;
 	
 	IsometricRenderer renderer(&window);
 	Environment environment(20, 20, 0);
@@ -24,6 +25,8 @@ int main(int argc, char** argv)
 
 	while (window.isOpen())
 	{
+		float deltatime = deltaClock.restart().asSeconds();
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -32,7 +35,7 @@ int main(int argc, char** argv)
 		}
 
 		window.clear();
-		renderer.render(&environment, characters);
+		renderer.render(&environment, characters, deltatime);
 		window.display();
 	}
 

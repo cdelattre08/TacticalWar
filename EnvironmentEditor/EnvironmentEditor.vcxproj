@@ -90,7 +90,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SFML_STATIC;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\EnvironmentPersistanceLib;..\AnimationsAndSoundLib;..\TacticalWarCommonLib;..\TacticalWarClientCommonLib;..\IsometricRendererLib;..\lib\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\UtilsLib;..\EnvironmentPersistanceLib;..\AnimationsAndSoundLib;..\TacticalWarCommonLib;..\TacticalWarClientCommonLib;..\IsometricRendererLib;..\lib\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -125,7 +125,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SFML_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\EnvironmentPersistanceLib;..\AnimationsAndSoundLib;..\TacticalWarCommonLib;..\TacticalWarClientCommonLib;..\IsometricRendererLib;..\lib\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\UtilsLib;..\EnvironmentPersistanceLib;..\AnimationsAndSoundLib;..\TacticalWarCommonLib;..\TacticalWarClientCommonLib;..\IsometricRendererLib;..\lib\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -176,6 +176,9 @@
     </ProjectReference>
     <ProjectReference Include="..\TacticalWarCommonLib\TacticalWarCommonLib.vcxproj">
       <Project>{22afcd2a-5058-44cf-8264-ad1a26272a58}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilsLib\UtilsLib.vcxproj">
+      <Project>{1d67c839-b5d5-4a87-8fdb-0ff8f2aed605}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

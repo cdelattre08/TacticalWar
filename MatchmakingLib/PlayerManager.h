@@ -3,6 +3,7 @@
 #include "Player.h"
 #include <vector>
 #include "Match.h"
+#include <StringUtils.h>
 
 namespace tw
 {

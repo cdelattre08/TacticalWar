@@ -76,7 +76,7 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 	sf::RectangleShape rect;
 	sf::Color color;
 	sf::Vector2f size(64, 64);
-
+	
 	for (int i = 0; i < environment->getWidth(); i++)
 	{
 		for (int j = 0; j < environment->getHeight(); j++)
@@ -94,8 +94,8 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 			{
 				color = sf::Color::Black;
 			}
-
-			rect.setPosition(i * 64, j * 64);
+			
+			rect.setPosition(i*64, j*64); // peut être ici qu'il faut changer le co TODO:: Trouver la valeur de "environment->getWidth
 			rect.setSize(size);
 
 			sf::Color mulColor = sf::Color::White;
@@ -109,7 +109,7 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 			window->draw(rect);
 		}
 	}
-
+	
 	for (int i = 0; i < characters.size(); i++)
 	{
 		BaseCharacterModel * m = characters[i];
@@ -120,9 +120,10 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 
 
 		sf::IntRect rect = s->getTextureRect();
+		bool flipped = s->getScale().x < 0;
 		float scaleX = 64.0 / (float)rect.width;
 		float scaleY = 64.0 / (float)rect.height;
-		s->setScale(scaleX, scaleY);
+		s->setScale(flipped ? -scaleX : scaleX, scaleY);
 		window->draw(*s);
 	}
 }

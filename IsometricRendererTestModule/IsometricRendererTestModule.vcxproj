@@ -115,7 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SFML_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\lib\SFML-2.5.1\include;..\TacticalWarClientCommonLib;..\TacticalWarCommonLib;..\IsometricRendererLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\UtilsLib;..\lib\SFML-2.5.1\include;..\TacticalWarClientCommonLib;..\TacticalWarCommonLib;..\IsometricRendererLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SFML_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\lib\SFML-2.5.1\include;..\TacticalWarClientCommonLib;..\TacticalWarCommonLib;..\IsometricRendererLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\UtilsLib;..\lib\SFML-2.5.1\include;..\TacticalWarClientCommonLib;..\TacticalWarCommonLib;..\IsometricRendererLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -162,6 +162,9 @@
     </ProjectReference>
     <ProjectReference Include="..\TacticalWarCommonLib\TacticalWarCommonLib.vcxproj">
       <Project>{22afcd2a-5058-44cf-8264-ad1a26272a58}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilsLib\UtilsLib.vcxproj">
+      <Project>{1d67c839-b5d5-4a87-8fdb-0ff8f2aed605}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

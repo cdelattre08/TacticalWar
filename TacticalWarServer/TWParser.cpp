@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "TcpServer.h"
-#include "StringUtils.h"
+#include <StringUtils.h>
 #include <PlayerManager.h>
 #include <Match.h>
 

@@ -1,14 +1,54 @@
 #include "pch.h"
 #include "PlayerManager.h"
+#include <fstream>
+#include <string>
+#include <iostream>
+#include <deque>
+using namespace std;
 
 tw::Match * tw::PlayerManager::testMatch = NULL;
 
 std::vector<tw::Player*> tw::PlayerManager::loadPlayers()
 {
+	int index = 1;
 	std::vector<tw::Player*> result;
 
-	// Vous devrez remplacer les données de test par des 
-	// données chargées depuis un fichier.
+	// Vous devrez remplacer les donnÃ©es de test par des 
+	// donnÃ©es chargÃ©es depuis un fichier.
+	ifstream fichierTeam("../assets/equipe.txt");
+
+	if (fichierTeam)
+	{
+		cout << "Ouverture reussi\n" << endl;
+		string dataFile;
+
+		fichierTeam >> dataFile;
+
+		vector<std::string> result = StringUtils::explode(dataFile, '/');
+
+		cout << "Liste des joueurs : \n" << endl;
+		
+		for (int i = 0; i < result.size(); i++)
+		{
+			cout << "joueur" << index << " : " << result[i] << endl;
+			index++;
+		}
+
+		vector<std::string> result1 = StringUtils::explode(dataFile, ',');
+
+		for (int i = 0; i < result1.size(); i++)
+		{
+			/* Enlever les '/' pour le dÃ©ocupage clean.
+			if (result1[i] != '/')
+			{
+				cout << result1[i] << endl;	
+			}*/
+			cout << result1[i] << endl;
+		}
+	}
+	else {
+		cout << "Pas reussi\n" << endl;
+	}
 
 	result.push_back(new Player("J1", "P1", 1));
 	result.push_back(new Player("J2", "P2", 1));
@@ -23,7 +63,7 @@ tw::Match * tw::PlayerManager::getCurrentOrNextMatchForPlayer(tw::Player * p)
 	createTestMatchIfNotExists();
 
 	// TODO : Rechercher le match courant ou le prochain pour le joueur p 
-	// et le retourner. Si aucun match à venir, retourner NULL.
+	// et le retourner. Si aucun match Ã  venir, retourner NULL.
 
 	if (testMatch->getStatus() != FINISHED)
 	{

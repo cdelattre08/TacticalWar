@@ -42,8 +42,10 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 				int x = e.mouseButton.x;
 				int y = e.mouseButton.y;
 
-				int cellX = x / 64;
-				int cellY = y / 64;
+				sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(x, y);
+
+				int cellX = isoCoords.x;
+				int cellY = isoCoords.y;
 
 				if (cellX >= 0 && cellX < environment->getWidth()
 					&&
@@ -71,6 +73,12 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 			notifyCellMouseDown(cellX, cellY);
 		}
 	}
+}
+sf::Vector2i IsometricRenderer::screenCoordinatesToIsoGridCoordinates(int screenX, int screenY)
+{
+	//return sf::Vector2i((screenX/120 + screenY/120)*2, (screenY / 60 - screenX/60)*2);
+	//return sf::Vector2i((screenX/120 - screenY/120)*64, (screenX/60+screenY/60)*64);
+	return sf::Vector2i((screenY / 60 - screenX / 60) * 2, (screenX / 120 + screenY / 120) * 2);
 }
 
 void IsometricRenderer::render(Environment* environment, std::vector<BaseCharacterModel*> & characters, float deltatime)

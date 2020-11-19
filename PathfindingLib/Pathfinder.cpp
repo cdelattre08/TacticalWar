@@ -94,38 +94,62 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 			P.push_back(a);
 			std::vector<CellData*> Voisins;
 
+			if (a->getX() + 1 < environment->getWidth()) //adjacent droit
+			{
+				CellData * voisinDroite = environment->getMapData(a->getX() + 1, a->getY());
+				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle())
+				{
+					Voisins.push_back(voisinDroite);
+				}
+			}
 
+			if (a->getX() -1 < environment->getWidth()) //adjacent gauche
+			{
+				CellData * voisinDroite = environment->getMapData(a->getX() - 1, a->getY());
+				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle())
+				{
+					Voisins.push_back(voisinDroite);
+				}
+			}
 			
-					if (d[cell + cell->getX] != environment->getWidth + 1) //adjacent droit
-					{
-						Voisins.push_back(cell + cell->getX);
-					}
+			if (a->getY() + 1 < environment->getHeight()) //adjacent bas
+			{
+				CellData * voisinDroite = environment->getMapData(a->getX(), a->getY()+1);
+				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle())
+				{
+					Voisins.push_back(voisinDroite);
+				}
+			}
 
-					if (d[cell - cell->getX] != -1)	//adjacent gauche
-					{
-						Voisins.push_back(cell - cell->getX);
-					}
+			if (a->getY() - 1 >= 0) //adjacent haut
+			{
+				CellData * voisinDroite = environment->getMapData(a->getX(), a->getY() - 1);
+				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle())
+				{
+					Voisins.push_back(voisinDroite);
+				}
+			}
 
-					if (d[cell + cell->getY] != environment->getHeight + 1)	//adjacent bas
-					{
-						Voisins.push_back(cell + cell->getY);
-					}
-
-					if (d[cell - cell->getY] != environment->getHeight + 1)	//adjacent haut
-					{
-						Voisins.push_back(cell - cell->getY);
-					}
-			
 			//comparaison des distances voisines
 
 			std::vector<float> distancesfroma;
 			bool sorted = false;
+			int i = 0;
+			float temp;
 
 			for (int i = 0; i < Voisins.size; i++)
+			{				
+				distancesfroma[i] = sqrt((Voisins[i]->getX - a->getX)*(Voisins[i]->getX - a->getX)+(Voisins[i]->getY - a->getY)*(Voisins[i]->getY - a->getY)); //formule pour calculer une distance entre deux cellules	adjacentes
+			}
+
+			while (sorted == false)
 			{
-				
-				distancesfroma[i] = sqrt((Voisins[i]->getX - a->getX)*(Voisins[i]->getX - a->getX)+(Voisins[i]->getY - a->getY)*(Voisins[i]->getY - a->getY)); //formule pour calculer une distance entre deux cellules
-				
+				if (distancesfroma[i] > distancesfroma[i + 1] && distancesfroma[i+1] != distancesfroma.size+1) //on trie pour obtenir les distances dans l'ordre croissant
+				{
+					temp = distancesfroma[i + 1];
+					distancesfroma[i + 1] = distancesfroma[i];
+					distancesfroma[i] = temp;
+				}
 			}
 
 			

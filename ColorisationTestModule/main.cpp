@@ -24,10 +24,29 @@ int main(int argc, char** argv)
 	Source.setSmooth(true);
 
 	// Couleur que l'on souhaite appliquer :
-	sf::Color toApply1 = sf::Color(100,100,100);
-	sf::Color toApply2 = sf::Color(201, 201, 201);
-	sf::Color toApply3 = sf::Color(232,220,198);
+	sf::Color toApplyarmure = sf::Color(120, 17, 17);
+	sf::Color toApplycheveux = sf::Color(108, 70, 35);
+	sf::Color toApplypeau = sf::Color(202,165,150);
+
+	/* Couleur d'armure qui definie une equipe
+
+	Color(222, 199, 31) -> jaune 
+	Color(75, 101, 222) -> bleu 
+	Color(120,17,17) -> rouge 
+	*/
+	/* Couleur aleatoire appliquer sur les cheveux 
+
+	Color(255, 203, 96) -> blond 
+	Color(108,70,35) -> chatain 
+	Color(38,33,24) -> brun 
+	Color(173,79,9) -> roux 
+	*/
+	/* Couleur de base de la peau
+
+	Color(202,165,150) -> tein de peau*/
 	
+
+
 	for (int x = 0; x < img.getSize().x; x++)
 	{
 		for (int y = 0; y < img.getSize().y; y++)
@@ -37,19 +56,19 @@ int main(int argc, char** argv)
 			if (couleur.r > couleur.b && couleur.r > couleur.g && couleur.r > 50)
 			{
 				sf::Color colorSrc = src.getPixel(x, y);
-				colorSrc = colorSrc * toApply1;
+				colorSrc = colorSrc * toApplyarmure;
 				src.setPixel(x, y, colorSrc);
 
 			}else if (couleur.b > couleur.r && couleur.b > couleur.g && couleur.b > 50)
 			{
 				sf::Color colorSrc = src.getPixel(x, y);
-				colorSrc = colorSrc * toApply2;
+				colorSrc = colorSrc * toApplycheveux;
 				src.setPixel(x, y, colorSrc);
 
 			}else if (couleur.g > couleur.r && couleur.g > couleur.b && couleur.g > 50)
 			{
 				sf::Color colorSrc = src.getPixel(x, y);
-				colorSrc = colorSrc * toApply3;
+				colorSrc = colorSrc * toApplypeau;
 				src.setPixel(x, y, colorSrc);
 			}
 			

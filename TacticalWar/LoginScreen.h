@@ -10,6 +10,8 @@ namespace tw
 		sf::Font font;
 		sf::Text title;
 		bool readyForConnect;
+		float messageDuration;
+		tgui::Label::Ptr errorMsg;
 
 	public:
 		LoginScreen(tgui::Gui * gui);

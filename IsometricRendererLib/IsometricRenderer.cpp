@@ -8,11 +8,17 @@ using namespace tw;
 
 IsometricRenderer::IsometricRenderer(sf::RenderWindow * window)
 {
-
+	hasFocus = true;
+	forcedFocus = false;
 	if (!textureGrass.loadFromFile("assets/tiles/Grass_01.png")) { std::cout << "Impossible de charger Grass texture" << std::endl; }
 	if (!textureWater.loadFromFile("assets/tiles/Water_01.png")) { std::cout << "Impossible de charger Water texture" << std::endl; }
 	if (!textureStone.loadFromFile("assets/tiles/Stone_02.png")) { std::cout << "Impossible de charger Stone texture" << std::endl; }
 	if (!textureTree.loadFromFile("assets/tiles/Tree_01.png")) { std::cout << "Impossible de charger Tree texture" << std::endl; }
+
+	textureGrass.setSmooth(true);
+	textureWater.setSmooth(true);
+	textureStone.setSmooth(true);
+	textureTree.setSmooth(true);
 
 	this->window = window;
 	this->colorator = NULL;
@@ -26,6 +32,18 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 		// check the type of the event...
 		switch (e.type)
 		{
+		/*
+		case sf::Event::LostFocus:
+			std::cout << "Lost focus" << std::endl;
+			hasFocus = false;
+			break;
+
+		case sf::Event::GainedFocus:
+			std::cout << "Gain focus" << std::endl;
+			hasFocus = true;
+			
+			break;
+		*/
 			// window closed
 		case sf::Event::Closed:
 			window->close();
@@ -51,7 +69,8 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 					&&
 					cellY >= 0 && cellY < environment->getHeight())
 				{
-					notifyCellClicked(cellX, cellY);
+					if(hasFocus)
+						notifyCellClicked(cellX, cellY);
 				}
 			}
 			break;
@@ -61,27 +80,51 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 		}
 	}
 
+	// Gestion du focus :
+	if (!forcedFocus)
+	{
+		if (window->hasFocus())
+		{
+			if (!hasFocus)
+			{
+				hasFocus = true;
+				std::cout << "Gain focus" << std::endl;
+			}
+		}
+		else
+		{
+			if (hasFocus)
+			{
+				hasFocus = false;
+				std::cout << "Lost focus" << std::endl;
+			}
+		}
+	}
+
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		sf::Vector2i position = sf::Mouse::getPosition(*window);
-
-		sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(position.x, position.y);
-
-		int cellX = isoCoords.x;
-		int cellY = isoCoords.y;
-
-		if (cellX >= 0 && cellX < environment->getWidth()
-			&&
-			cellY >= 0 && cellY < environment->getHeight())
+		if (position.x >= 0 && position.y >= 0)
 		{
-			notifyCellMouseDown(cellX, cellY);
+			sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(position.x, position.y);
+
+			int cellX = isoCoords.x;
+			int cellY = isoCoords.y;
+
+			if (cellX >= 0 && cellX < environment->getWidth()
+				&&
+				cellY >= 0 && cellY < environment->getHeight())
+			{
+				if (hasFocus)
+					notifyCellMouseDown(cellX, cellY);
+			}
 		}
 	}
 }
 sf::Vector2i IsometricRenderer::screenCoordinatesToIsoGridCoordinates(int screenX, int screenY)
 {
 	int calcX = floor((screenY/60) + (screenX/120));
-	int calcY = floor((screenY/60) - (screenX/120));
+	int calcY = ceil((screenY/60) - (screenX/120));
 	//return sf::Vector2i((screenX/120 + screenY/120)*2, (screenY / 60 - screenX/60)*2);
 	//return sf::Vector2i((screenX/120 - screenY/120)*64, (screenX/60+screenY/60)*64);
 	return sf::Vector2i(calcX, calcY);
@@ -136,6 +179,13 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 			int isoX = (i*120 - j*120)/2; // Cordonnées
 			int isoY = (i*60 + j*60)/2;
 
+			sf::Color toApply = sf::Color::White;
+			if (colorator != NULL)
+			{
+				toApply = colorator->getColorForCell(cell);
+			}
+
+			spriteToDraw.setColor(toApply);
 			spriteToDraw.setScale(0.05, 0.05);
 			spriteToDraw.setPosition(borderX+isoX, borderY+isoY); 
 			window->draw(spriteToDraw);
@@ -148,7 +198,11 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 		CharacterView & v = getCharacterView(m);
 		v.update(deltatime);
 		sf::Sprite * s = v.getImageToDraw();
-		s->setPosition(m->getInterpolatedX() * 64, m->getInterpolatedY() * 64);
+
+		int isoX = (m->getInterpolatedX() * 120 - m->getInterpolatedY() * 120) / 2;
+		int isoY = (m->getInterpolatedX() * 60 + m->getInterpolatedY() * 60) / 2;
+
+		s->setPosition(isoX + 60, isoY - 7);
 	
 
 		sf::IntRect rect = s->getTextureRect();

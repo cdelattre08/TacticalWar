@@ -6,6 +6,8 @@
 #include <BaseCharacterModel.h>
 #include <Environment.h>
 #include <vector>
+#include <Windows.h>
+#include "SelectablePanel.h"
 
 namespace EnvironmentEditor {
 
@@ -37,6 +39,7 @@ namespace EnvironmentEditor {
 				 window = new sf::RenderWindow((sf::WindowHandle)sfmlRenderingSurface->Handle.ToInt32());
 				 renderer->modifyWindow(window);
 				 renderer->addEventListener(eventListener);
+				 window->requestFocus();
 			 }
 
 	public:
@@ -89,7 +92,7 @@ namespace EnvironmentEditor {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
-			this->sfmlRenderingSurface = (gcnew System::Windows::Forms::Panel());
+			this->sfmlRenderingSurface = (gcnew SelectablePanel());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->actionsGroupBox = (gcnew System::Windows::Forms::GroupBox());
 			this->SuspendLayout();
@@ -102,6 +105,8 @@ namespace EnvironmentEditor {
 			this->sfmlRenderingSurface->Size = System::Drawing::Size(964, 613);
 			this->sfmlRenderingSurface->TabIndex = 0;
 			this->sfmlRenderingSurface->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &EditorUI::sfmlRenderingSurface_Paint);
+			this->sfmlRenderingSurface->GotFocus += gcnew System::EventHandler(this, &EnvironmentEditor::EditorUI::OnGotFocus);
+			this->sfmlRenderingSurface->LostFocus += gcnew System::EventHandler(this, &EnvironmentEditor::EditorUI::OnLostFocus);
 			this->sfmlRenderingSurface->Resize += gcnew System::EventHandler(this, &EditorUI::sfmlRenderingSurface_Resize);
 			// 
 			// timer1
@@ -144,5 +149,14 @@ namespace EnvironmentEditor {
 	private: System::Void sfmlRenderingSurface_Resize(System::Object^  sender, System::EventArgs^  e) {
 		reinitializeRenderer();
 	}
+			 void OnGotFocus(System::Object ^sender, System::EventArgs ^e)
+			 {
+				 renderer->forceFocus();
+			 }
+			 void OnLostFocus(System::Object ^sender, System::EventArgs ^e)
+			 {
+				 renderer->forceUnfocus();
+			 }
 };
 }
+

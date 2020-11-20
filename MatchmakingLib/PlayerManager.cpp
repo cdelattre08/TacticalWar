@@ -13,11 +13,10 @@ std::vector<tw::Player*> tw::PlayerManager::loadPlayers()
 {
 	int index = 1;
 	std::vector<tw::Player*> result;
-	user user;
 
 	// Vous devrez remplacer les données de test par des 
 	// données chargées depuis un fichier.
-	ifstream fichierTeam("../assets/equipe.txt");
+	ifstream fichierTeam("./assets/equipe.txt");
 
 	if (fichierTeam)
 	{

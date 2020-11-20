@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <SFML\Graphics.hpp>
+#include <iostream>
 
 namespace tw
 {
@@ -14,6 +15,9 @@ namespace tw
 
 	class IsometricRenderer : public AbstractRenderer
 	{
+		bool hasFocus;
+		bool forcedFocus;
+		
 		sf::RenderWindow * window;
 		CellColorator * colorator;
 
@@ -37,6 +41,20 @@ namespace tw
 		void setColorator(CellColorator * colorator)
 		{
 			this->colorator = colorator;
+		}
+
+		inline void forceFocus()
+		{
+			forcedFocus = true;
+			hasFocus = true;
+			std::cout << "Force gain focus" << std::endl;
+		}
+
+		inline void forceUnfocus()
+		{
+			forcedFocus = true;
+			hasFocus = false;
+			std::cout << "Force lost focus" << std::endl;
 		}
 	};
 }

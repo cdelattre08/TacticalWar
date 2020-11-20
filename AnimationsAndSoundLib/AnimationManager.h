@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "BattleActionToAnimation.h"
 #include <vector>
-class AnimationManager : public BattleActionToAnimation
+class AnimationManager : public IActionAnimationEventListener 
 {
 	private :
 		std::vector<BattleActionToAnimation*> animationtime;

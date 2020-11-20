@@ -2,18 +2,20 @@
 #include <iostream>
 #include "IActionAnimationEventListener.h"
 #include <vector>
-class BattleActionToAnimation : public IActionAnimationEventListener 
+
+class BattleActionToAnimation
 {
 	private:
 		std::vector<IActionAnimationEventListener*> Listener;
+		float elseTime;
 	protected:
-		virtual void notifyAnimationFinished(float remainingTime);
+		void notifyAnimationFinished(float remainingTime);
 
 public : 
 	void addlistener(IActionAnimationEventListener*);
 	void removelistener(IActionAnimationEventListener*);
 	void start();
-	void ellapseTime(float deltatime);
+	void elapseTime(float deltatime);
 	void update(float deltatime);
 };
 

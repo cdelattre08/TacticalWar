@@ -31,6 +31,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ColorisationTestModule", "C
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnvironmentPersistanceLib", "EnvironmentPersistanceLib\EnvironmentPersistanceLib.vcxproj", "{FAD2F01A-A414-4665-88B2-1191EAC5F5C1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PathfindingTestModule", "PathfindingTestModule\PathfindingTestModule.vcxproj", "{AA769065-09C8-4B28-80C5-AD2822EF7499}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +183,16 @@ Global
 		{FAD2F01A-A414-4665-88B2-1191EAC5F5C1}.Release|x64.Build.0 = Release|x64
 		{FAD2F01A-A414-4665-88B2-1191EAC5F5C1}.Release|x86.ActiveCfg = Release|Win32
 		{FAD2F01A-A414-4665-88B2-1191EAC5F5C1}.Release|x86.Build.0 = Release|Win32
+		{AA769065-09C8-4B28-80C5-AD2822EF7499}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{AA769065-09C8-4B28-80C5-AD2822EF7499}.Debug|x64.ActiveCfg = Debug|x64
+		{AA769065-09C8-4B28-80C5-AD2822EF7499}.Debug|x64.Build.0 = Debug|x64
+		{AA769065-09C8-4B28-80C5-AD2822EF7499}.Debug|x86.ActiveCfg = Debug|Win32
+		{AA769065-09C8-4B28-80C5-AD2822EF7499}.Debug|x86.Build.0 = Debug|Win32
+		{AA769065-09C8-4B28-80C5-AD2822EF7499}.Release|Any CPU.ActiveCfg = Release|Win32
+		{AA769065-09C8-4B28-80C5-AD2822EF7499}.Release|x64.ActiveCfg = Release|x64
+		{AA769065-09C8-4B28-80C5-AD2822EF7499}.Release|x64.Build.0 = Release|x64
+		{AA769065-09C8-4B28-80C5-AD2822EF7499}.Release|x86.ActiveCfg = Release|Win32
+		{AA769065-09C8-4B28-80C5-AD2822EF7499}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <limits>
 #include <math.h>
+#include <time.h>
 
 
 using namespace tw;
@@ -44,7 +45,7 @@ Orientation Pathfinder::getOrientationFromPosition(Position p1, Position p2)
 std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPosition, Environment * environment, std::vector<Obstacle*> obstacles)
 {
 	std::vector<Position> path;
-
+	std::map<CellData*, CellData*> Predecesseur;
 	std::vector<CellData*> P;
 	std::map<CellData*, float> d;
 	
@@ -131,33 +132,32 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 			}
 
 			//comparaison des distances voisines
-
-			std::vector<float> distancesfroma;
 			bool sorted = false;
 			int i = 0;
+			int compteur = 0;
 			float temp;
 
 			for (int i = 0; i < Voisins.size; i++)
 			{				
-				distancesfroma[i] = sqrt((Voisins[i]->getX - a->getX)*(Voisins[i]->getX - a->getX)+(Voisins[i]->getY - a->getY)*(Voisins[i]->getY - a->getY)); //formule pour calculer une distance entre deux cellules	adjacentes
-			}
-
-			while (sorted == false)
-			{
-				if (distancesfroma[i] > distancesfroma[i + 1] && distancesfroma[i+1] != distancesfroma.size+1) //on trie pour obtenir les distances dans l'ordre croissant
+				if (d[Voisins[i]] > d[a] + 1)
 				{
-					temp = distancesfroma[i + 1];
-					distancesfroma[i + 1] = distancesfroma[i];
-					distancesfroma[i] = temp;
+					d[Voisins[i]] = d[a] + 1; //formule pour calculer une distance entre deux cellules	adjacentes
+					Predecesseur[Voisins[i]] = a;
 				}
 			}
-
-			
 		}
-
 	}
 
-	
+	CellData * endCell = environment->getMapData(endPosition.getX(), endPosition.getY());
+	CellData * startCell = environment->getMapData(startPosition.getX(), startPosition.getY());
+
+	CellData * currentCell = endCell;
+
+	while (currentCell != startCell)
+	{
+		path.push_back(tw::Position(currentCell->getX(), currentCell->getY());
+		currentCell = Predecesseur[currentCell];
+	}
 
 	
 	// TODO : Implémenter un algorithme de recherche de plus court chemin entre startPosition et endPosition

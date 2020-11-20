@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "IsometricRenderer.h"
 #include <CharacterView.h>
-
+#include <math.h>
 #include <iostream>
 
 using namespace tw;
@@ -60,8 +60,10 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 				int x = e.mouseButton.x;
 				int y = e.mouseButton.y;
 
-				int cellX = x / 64;
-				int cellY = y / 64;
+				sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(x, y);
+
+				int cellX = isoCoords.x;
+				int cellY = isoCoords.y;
 
 				if (cellX >= 0 && cellX < environment->getWidth()
 					&&
@@ -104,8 +106,11 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 		sf::Vector2i position = sf::Mouse::getPosition(*window);
 		if (position.x >= 0 && position.y >= 0)
 		{
-			int cellX = position.x / 64;
-			int cellY = position.y / 64;
+			sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(position.x, position.y);
+
+			int cellX = isoCoords.x;
+			int cellY = isoCoords.y;
+
 			if (cellX >= 0 && cellX < environment->getWidth()
 				&&
 				cellY >= 0 && cellY < environment->getHeight())
@@ -115,6 +120,14 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 			}
 		}
 	}
+}
+sf::Vector2i IsometricRenderer::screenCoordinatesToIsoGridCoordinates(int screenX, int screenY)
+{
+	int calcX = floor((screenY/60) + (screenX/120));
+	int calcY = ceil((screenY/60) - (screenX/120));
+	//return sf::Vector2i((screenX/120 + screenY/120)*2, (screenY / 60 - screenX/60)*2);
+	//return sf::Vector2i((screenX/120 - screenY/120)*64, (screenX/60+screenY/60)*64);
+	return sf::Vector2i(calcX, calcY);
 }
 
 void IsometricRenderer::render(Environment* environment, std::vector<BaseCharacterModel*> & characters, float deltatime)
@@ -163,7 +176,7 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 				spriteToDraw = spriteWater;
 			}
 
-			int isoX = (i*120 - j*120)/2;
+			int isoX = (i*120 - j*120)/2; // Cordonnées
 			int isoY = (i*60 + j*60)/2;
 
 			sf::Color toApply = sf::Color::White;

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "IsometricRenderer.h"
 #include <CharacterView.h>
-
+#include <math.h>
 #include <iostream>
 
 using namespace tw;
@@ -80,9 +80,11 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 }
 sf::Vector2i IsometricRenderer::screenCoordinatesToIsoGridCoordinates(int screenX, int screenY)
 {
+	int calcX = ((screenY/60) + (screenX/120));
+	int calcY = ((screenY/60) - (screenX/120));
 	//return sf::Vector2i((screenX/120 + screenY/120)*2, (screenY / 60 - screenX/60)*2);
 	//return sf::Vector2i((screenX/120 - screenY/120)*64, (screenX/60+screenY/60)*64);
-	return sf::Vector2i(/*(screenY / 60 - screenX / 60) * 2, (screenX / 120 + screenY / 120) * 2*/0,0);
+	return sf::Vector2i(calcX, calcY);
 }
 
 void IsometricRenderer::render(Environment* environment, std::vector<BaseCharacterModel*> & characters, float deltatime)
@@ -131,7 +133,7 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 				spriteToDraw = spriteWater;
 			}
 
-			int isoX = (i*120 - j*120)/2;
+			int isoX = (i*120 - j*120)/2; // Cordonnées
 			int isoY = (i*60 + j*60)/2;
 
 			spriteToDraw.setScale(0.05, 0.05);

@@ -155,7 +155,7 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 
 	while (currentCell != startCell)
 	{
-		path.push_back(tw::Position(currentCell->getX(), currentCell->getY());
+		path.push_back(tw::Position(currentCell->getX(), currentCell->getY()));
 		currentCell = Predecesseur[currentCell];
 	}
 

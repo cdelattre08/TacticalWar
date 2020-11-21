@@ -1,0 +1,35 @@
+	/* TUTORIEL POUR INITIALISER VOTRE PROJET GITHUB ET UTILISER LA MAGIE DES COMMANDES GIT */
+
+Après avoir fork le projet dit "upstream" sur votre github personnel allez dans "Settings" 
+-> "Manage access"
+-> "Invite a collaborator" 
+-> entrez le pseudo github de votre coéquipié 
+-> add friendname to this repository
+
+Faire un git clone de votre fork dit "origin" dans vos dossiers 
+Une fois cloné ouvrir "TacticalWar" faites un clique droit puis "Git Bash Here" et entrez les commandes suivantes : 
+
+- git remote add upstream https://github.com/Alex6092/TacticalWar.git
+- git fetch
+- git pull upstream master
+  ouvrir le fichier "Pull-Request-Verif.txt" Ajoutez votre nom puis enregistrez. 
+- git add Pull-Request-Verif.txt
+- git commit -m "add of my name for pull request verification"
+- git push origin master 
+
+Puis aller dans votre dossier sur github et faire un "new pull request" avec un titre de pull request adapté 
+/!\ Les pulls request sont à faire uniquement lorsque votre fork compile /!\ 
+
+
+/*-----------------------
+      Commandes utiles
+------------------------*/
+
+
+- git pull upstream master (pour récupérer la dernière version du projet)
+- git add filename (commande obligatoire lorsque vous modifiez un fichier que vous voulez commit)
+- git commit -m "comments" (commande pour faire un commit à faire avant de push)
+- git push origin master (pour push vos modifications dans votre dossier fork github)
+- git pull origin master (pour avoir la dernière version du projet de votre fork github)
+- git stash (commande à faire en cas de conflit entre votre version actuelle et votre projet fork github)
+

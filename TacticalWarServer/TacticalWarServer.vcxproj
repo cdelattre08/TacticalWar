@@ -115,7 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\EnvironmentPersistanceLib;..\TacticalWarCommonLib;..\TacticalWarBattleLib;..\MatchmakingLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\UtilsLib;..\EnvironmentPersistanceLib;..\TacticalWarCommonLib;..\TacticalWarBattleLib;..\MatchmakingLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\EnvironmentPersistanceLib;..\TacticalWarCommonLib;..\TacticalWarBattleLib;..\MatchmakingLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\UtilsLib;..\EnvironmentPersistanceLib;..\TacticalWarCommonLib;..\TacticalWarBattleLib;..\MatchmakingLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,7 +150,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="ParserEventListener.cpp" />
-    <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="TWParser.cpp" />
     <ClCompile Include="TcpServer.cpp" />
     <ClCompile Include="ThreadSafeQueue.cpp" />
@@ -159,7 +158,6 @@
     <ClInclude Include="ClientState.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="ParserEventListener.h" />
-    <ClInclude Include="StringUtils.h" />
     <ClInclude Include="TWParser.h" />
     <ClInclude Include="TcpServer.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
@@ -176,6 +174,9 @@
     </ProjectReference>
     <ProjectReference Include="..\TacticalWarCommonLib\TacticalWarCommonLib.vcxproj">
       <Project>{22afcd2a-5058-44cf-8264-ad1a26272a58}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilsLib\UtilsLib.vcxproj">
+      <Project>{1d67c839-b5d5-4a87-8fdb-0ff8f2aed605}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

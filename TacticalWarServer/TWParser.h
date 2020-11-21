@@ -18,6 +18,7 @@ class TWParser : public Parser<ClientState>, tw::MatchEventListener
 	std::map<std::string, tw::Player*> playersMap;
 	std::map<tw::Player*, ClientState*> connectedPlayerMap;
 	std::map<tw::Player*, Battle*> playerToBattleMap;
+	std::map<int, std::vector<tw::Player*>> teamIdToPlayerList;
 
 	// Liste des clients en mode spectateur (pour mettre à jour la liste des match en cours) :
 	std::vector<ClientState*> spectatorModeClientDiffusionList;

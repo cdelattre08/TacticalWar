@@ -123,7 +123,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\lib\SFML-2.5.1\include;..\TacticalWarCommonLib;..\TacticalWarClientCommonLib;..\AnimationsAndSoundLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\UtilsLib;..\PathfindingLib;..\lib\SFML-2.5.1\include;..\TacticalWarCommonLib;..\TacticalWarClientCommonLib;..\AnimationsAndSoundLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -141,7 +141,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\lib\SFML-2.5.1\include;..\TacticalWarCommonLib;..\TacticalWarClientCommonLib;..\AnimationsAndSoundLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\UtilsLib;..\PathfindingLib;..\lib\SFML-2.5.1\include;..\TacticalWarCommonLib;..\TacticalWarClientCommonLib;..\AnimationsAndSoundLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -172,11 +172,17 @@
     <ProjectReference Include="..\AnimationsAndSoundLib\AnimationsAndSoundLib.vcxproj">
       <Project>{2978aeb2-241e-4795-9480-a715e4213640}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\PathfindingLib\PathfindingLib.vcxproj">
+      <Project>{f579ad13-4a80-40f5-aba4-88e8e8739a71}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\TacticalWarClientCommonLib\TacticalWarClientCommonLib.vcxproj">
       <Project>{b62c37fc-cdbb-4c56-a9da-15c134509611}</Project>
     </ProjectReference>
     <ProjectReference Include="..\TacticalWarCommonLib\TacticalWarCommonLib.vcxproj">
       <Project>{22afcd2a-5058-44cf-8264-ad1a26272a58}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilsLib\UtilsLib.vcxproj">
+      <Project>{1d67c839-b5d5-4a87-8fdb-0ff8f2aed605}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

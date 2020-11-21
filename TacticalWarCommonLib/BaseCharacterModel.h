@@ -31,6 +31,7 @@ namespace tw
 
 
 		virtual int getClassId() = 0;
+		virtual std::string getGraphicsPath() = 0;
 
 		// Retourne la valeur du maximum de point de vie de base (sans altération d'effet). C'est une caractéristique de base de la classe.
 		virtual int getBaseMaxLife() = 0;
@@ -152,6 +153,16 @@ namespace tw
 		inline bool hasTargetPosition()
 		{
 			return (currentTargetX >= 0 && currentTargetY >= 0);
+		}
+
+		inline int getTargetX()
+		{
+			return currentTargetX;
+		}
+
+		inline int getTargetY()
+		{
+			return currentTargetY;
 		}
 	};
 }

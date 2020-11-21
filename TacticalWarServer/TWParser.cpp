@@ -2,18 +2,21 @@
 #include <iostream>
 
 #include "TcpServer.h"
-#include "StringUtils.h"
+#include <StringUtils.h>
 #include <PlayerManager.h>
 #include <Match.h>
 
 TWParser::TWParser()
 {
 	players = tw::PlayerManager::loadPlayers();
+	std::cout << players.size() << " joueurs charges :" << std::endl;
 
 	// Construct player pseudo to player data map :
 	for (int i = 0; i < players.size(); i++)
 	{
+		std::cout << players[i]->getPseudo().c_str() << " (equipe " << players[i]->getTeamNumber() << ")" << std::endl;
 		playersMap[players[i]->getPseudo()] = players[i];
+		teamIdToPlayerList[players[i]->getTeamNumber()].push_back(players[i]);
 	}
 }
 
@@ -58,6 +61,7 @@ std::string TWParser::extractCompleteMessageFromBuffer(ClientState * client)
 
 void TWParser::parse(ClientState * client, std::vector<unsigned char> & receivedPacket)
 {
+	bool spectatorMode = false;
 	std::deque<unsigned char> & buffer = client->getBuffer();
 
 	for (int i = 0; i < receivedPacket.size(); i++)
@@ -79,49 +83,59 @@ void TWParser::parse(ClientState * client, std::vector<unsigned char> & received
 			if (payload.length() > 0)
 			{
 				std::vector<std::string> data = StringUtils::explode(payload, ';');
-
-				std::string pseudo = data[0];
-				std::string password = data[1];
-
-				if (playersMap.find(pseudo) != playersMap.end())
+				if (data.size() >= 2)
 				{
-					tw::Player * p = playersMap[pseudo];
+					std::string pseudo = data[0];
+					std::string password = data[1];
 
-					if (password == p->getPassword())
+					if (playersMap.find(pseudo) != playersMap.end())
 					{
-						std::cout << "Connexion du joueur " << pseudo.c_str() << std::endl;
+						tw::Player * p = playersMap[pseudo];
 
-						// Si compte déjà utilisé : déconnexion du client précédent
-						if (connectedPlayerMap.find(p) != connectedPlayerMap.end())
+						if (password == p->getPassword())
 						{
-							std::cout << "Compte deja utilise, kick du client precedent" << std::endl;
-							// Kick :
-							kick(connectedPlayerMap[p]);
-						}
+							std::cout << "Connexion du joueur " << pseudo.c_str() << std::endl;
 
-						client->setPseudo(pseudo);
-						connectedPlayerMap[p] = client;
+							// Si compte déjà utilisé : déconnexion du client précédent
+							if (connectedPlayerMap.find(p) != connectedPlayerMap.end())
+							{
+								std::cout << "Compte deja utilise, kick du client precedent" << std::endl;
+								// Kick :
+								kick(connectedPlayerMap[p]);
+							}
 
-						tw::Match * match = tw::PlayerManager::getCurrentOrNextMatchForPlayer(p);
-						if (match->getStatus() == tw::MatchStatus::STARTED)
-						{
-							// Retour en jeu (reconnexion en combat)
-							Battle * b = (Battle*)match->getBattlePayload();
-							// TODO : Notify that the player is back.
-						}
-						else
-						{
-							// Détail du match à venir : proposer de rejoindre le match
+							client->setPseudo(pseudo);
+							connectedPlayerMap[p] = client;
+
+							tw::Match * match = tw::PlayerManager::getCurrentOrNextMatchForPlayer(p);
+							if (match->getStatus() == tw::MatchStatus::STARTED)
+							{
+								// Retour en jeu (reconnexion en combat)
+								Battle * b = (Battle*)match->getBattlePayload();
+								// TODO : Notify that the player is back.
+								TcpServer<TWParser, ClientState>::Send(client, (char*)"HG\n", 3);
+							}
+							else
+							{
+								// Détail du match à venir : proposer de rejoindre le match
+								TcpServer<TWParser, ClientState>::Send(client, (char*)"HG\n", 3);
+							}
 						}
 					}
 				}
+				else
+					spectatorMode = true;
 			}
 			else // Connexion spectateur
+				spectatorMode = true;
+
+			if (spectatorMode)
 			{
 				spectatorModeClientDiffusionList.push_back(client);
-				
+
 				std::vector<tw::Match*> playingMatch = tw::PlayerManager::getCurrentlyPlayingMatchs();
 				// TODO : Envoi de la liste des matchs en cours
+				TcpServer<TWParser, ClientState>::Send(client, (char*)"HG\n", 3);
 			}
 			//TcpServer<TWParser, ClientState>::Send(client, (char*)"Hello\n", 6);
 		}

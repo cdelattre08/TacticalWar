@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Player.h"
+#include "StringUtils.h"
 
 namespace tw
 {
@@ -21,6 +22,32 @@ namespace tw
 
 	class Match
 	{
+	private:
+		//-------------------------------------------------------
+		// Ne pas se soucier de ça :
+		std::vector<Player> team1Client;
+		std::vector<Player> team2Client;
+		void clientSetTeam1(std::vector<Player> team)
+		{
+			team1Client = team;
+		}
+
+		void clientSetTeam2(std::vector<Player> team)
+		{
+			team2Client = team;
+		}
+
+		std::vector<Player> clientGetTeam1()
+		{
+			return team1Client;
+		}
+
+		std::vector<Player> clientGetTeam2()
+		{
+			return team2Client;
+		}
+		//-------------------------------------------------------
+
 	private:
 		static int matchId;
 
@@ -67,6 +94,33 @@ namespace tw
 			}
 
 			return result;
+		}
+
+		static std::vector<Player> deserializeTeam(std::string teamInfo, char separatorPlayer, char separatorInfo)
+		{
+			std::vector<Player> result;
+			std::vector<std::string> teamData = StringUtils::explode(teamInfo, separatorPlayer);
+
+			for (int i = 0; i < teamData.size(); i++)
+			{
+				std::vector<std::string> playerData = StringUtils::explode(teamData[i], separatorInfo);
+				
+				result.push_back(Player(playerData[1], "", std::atoi(playerData[0].c_str())));
+				result.back().setHasJoinBattle(std::atoi(playerData[2].c_str()));
+			}
+
+			return result;
+		}
+
+		// A utiliser que pour la deserialisation :
+		inline void setId(int id)
+		{
+			this->id = id;
+		}
+
+		inline void setWinnerTeam(int winnerTeam)
+		{
+			this->winnerTeam = winnerTeam;
 		}
 
 	public:
@@ -185,6 +239,32 @@ namespace tw
 			result += serializeTeam(team1, '|', '^') + ",";
 			result += serializeTeam(team2, '|', '^');
 			
+			return result;
+		}
+
+		static Match * deserialize(std::string str)
+		{
+			Match * result = NULL;
+
+			std::vector<std::string> splited = StringUtils::explode(str, ',');
+			int i = 0;
+
+			int matchId = std::atoi(splited[i++].c_str());
+			std::string matchName = splited[i++];
+			MatchStatus status = (MatchStatus)std::atoi(splited[i++].c_str());
+			int winnerTeam = std::atoi(splited[i++].c_str());
+
+			std::vector<Player> team1 = deserializeTeam(splited[i++], '|', '^');
+			std::vector<Player> team2 = deserializeTeam(splited[i++], '|', '^');
+
+			result = new Match(matchName);
+			result->setMatchStatus(status);
+			result->setId(matchId);
+			result->setWinnerTeam(winnerTeam);
+
+			result->clientSetTeam1(team1);
+			result->clientSetTeam2(team2);
+
 			return result;
 		}
 	};

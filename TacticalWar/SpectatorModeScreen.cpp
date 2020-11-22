@@ -1,5 +1,6 @@
 #include "SpectatorModeScreen.h"
 #include "LinkToServer.h"
+#include <Match.h>
 
 SpectatorModeScreen::SpectatorModeScreen(tgui::Gui * gui)
 	: Screen()
@@ -82,6 +83,15 @@ void SpectatorModeScreen::onMessageReceived(std::string msg)
 	// Match list
 	if (m.substring(0, 2) == "ML")
 	{
-		// TODO
+		std::vector<tw::Match*> matchs;
+		std::vector<std::string> str = StringUtils::explode(m.substring(2), ';');
+
+		for (int i = 0; i < str.size(); i++)
+		{
+			matchs.push_back(tw::Match::deserialize(str[i]));
+		}
+		
+
+		// TODO : Afficher les matchs
 	}
 }

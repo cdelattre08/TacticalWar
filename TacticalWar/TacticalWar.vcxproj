@@ -117,7 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\UtilsLib;..\IsometricRendererLib;..\TacticalWarClientCommonLib;..\TacticalWarCommonLib;..\lib\SFML-2.5.1\include;..\lib\TGUI-0.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\MatchmakingLib;..\UtilsLib;..\IsometricRendererLib;..\TacticalWarClientCommonLib;..\TacticalWarCommonLib;..\lib\SFML-2.5.1\include;..\lib\TGUI-0.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,7 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\UtilsLib;..\IsometricRendererLib;..\TacticalWarClientCommonLib;..\TacticalWarCommonLib;..\lib\SFML-2.5.1\include;..\lib\TGUI-0.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\MatchmakingLib;..\UtilsLib;..\IsometricRendererLib;..\TacticalWarClientCommonLib;..\TacticalWarCommonLib;..\lib\SFML-2.5.1\include;..\lib\TGUI-0.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -166,6 +166,9 @@
   <ItemGroup>
     <ProjectReference Include="..\IsometricRendererLib\IsometricRendererLib.vcxproj">
       <Project>{616dd023-6d4b-4e87-9f8a-a548a3e691ab}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MatchmakingLib\MatchmakingLib.vcxproj">
+      <Project>{212f22a8-d95f-460e-bd47-346bffd85c9c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\TacticalWarClientCommonLib\TacticalWarClientCommonLib.vcxproj">
       <Project>{b62c37fc-cdbb-4c56-a9da-15c134509611}</Project>

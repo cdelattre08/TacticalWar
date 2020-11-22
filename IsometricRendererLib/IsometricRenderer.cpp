@@ -123,6 +123,8 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 }
 sf::Vector2i IsometricRenderer::screenCoordinatesToIsoGridCoordinates(int screenX, int screenY)
 {
+	screenY -= 30;
+
 	int calcX = floor((screenY/60) + (screenX/120));
 	int calcY = ceil((screenY/60) - (screenX/120));
 	//return sf::Vector2i((screenX/120 + screenY/120)*2, (screenY / 60 - screenX/60)*2);

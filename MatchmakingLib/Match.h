@@ -51,6 +51,24 @@ namespace tw
 			}
 		}
 
+		std::string serializeTeam(std::vector<Player*> & team, char separatorPlayer, char separatorInfo)
+		{
+			std::string result;
+
+			for (int i = 0; i < team.size(); i++)
+			{
+				Player * p = team[i];
+				if (i != 0)
+					result += separatorPlayer;
+
+				result += std::to_string(p->getTeamNumber()) + separatorInfo;
+				result += p->getPseudo() + separatorInfo;
+				result += std::to_string(p->getHasJoinBattle() ? 1 : 0);
+			}
+
+			return result;
+		}
+
 	public:
 		Match(std::string name)
 		{
@@ -140,7 +158,7 @@ namespace tw
 
 		void setMatchStatus(MatchStatus status)
 		{
-			MatchStatus oldStatus;
+			MatchStatus oldStatus = this->status;
 			this->status = status;
 			notifyStatusChanged(oldStatus, status);
 		}
@@ -158,6 +176,16 @@ namespace tw
 			{
 				listeners.erase(it);
 			}
+		}
+
+		std::string serialize()
+		{
+			std::string result = "";
+			result = std::to_string(id) + "," + name + "," + std::to_string((int)status) + "," + std::to_string(winnerTeam) + ",";
+			result += serializeTeam(team1, '|', '^') + ",";
+			result += serializeTeam(team2, '|', '^');
+			
+			return result;
 		}
 	};
 }

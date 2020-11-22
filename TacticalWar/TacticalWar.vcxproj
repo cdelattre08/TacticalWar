@@ -158,6 +158,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
+    <ClCompile Include="ServerMessageListener.cpp" />
+    <ClCompile Include="SpectatorModeScreen.cpp" />
     <ClCompile Include="TestCharacterModel.cpp" />
     <ClCompile Include="TWColorator.cpp" />
   </ItemGroup>
@@ -181,6 +183,8 @@
     <ClInclude Include="LoginScreen.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ScreenManager.h" />
+    <ClInclude Include="ServerMessageListener.h" />
+    <ClInclude Include="SpectatorModeScreen.h" />
     <ClInclude Include="TestCharacterModel.h" />
     <ClInclude Include="TWColorator.h" />
   </ItemGroup>

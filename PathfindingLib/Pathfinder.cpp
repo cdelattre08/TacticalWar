@@ -31,7 +31,7 @@ Pathfinder::~Pathfinder()
 
 int Pathfinder::TotalCostFromStartToEnd() //calcul du cout total du point de depart au point d'arrivee (heuristique)
 {
-	
+	return 0;
 }
 
 Orientation Pathfinder::getOrientationFromPosition(Position p1, Position p2)
@@ -55,10 +55,8 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 		for (int j = 0; j < environment->getHeight(); j++)
 		{
 			CellData * cell = environment->getMapData(i, j);
-			Obstacle* cell_target;
 
-
-			if (!cell->getIsObstacle() && cell_target->getIsTargettable)
+			if (!cell->getIsObstacle() && cell->getIsWalkable())
 			{
 				d[cell] = std::numeric_limits<float>::max(); //sommet à +infini
 			}
@@ -70,7 +68,7 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 	float PlusCourteDistance = std::numeric_limits<float>::max();
 	float NewDistance;
 
-	while(P.size != d.size)	//on itère tant que qu'il existe un sommet hors de P donc tant que P ne fait pas la même taille que le nombre total de sommets
+	while(P.size() != d.size())	//on itère tant que qu'il existe un sommet hors de P donc tant que P ne fait pas la même taille que le nombre total de sommets
 	{
 		CellData * a = NULL;
 		for (int i = 0; i < environment->getWidth(); i++)
@@ -98,16 +96,16 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 			if (a->getX() + 1 < environment->getWidth()) //adjacent droit
 			{
 				CellData * voisinDroite = environment->getMapData(a->getX() + 1, a->getY());
-				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle())
+				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle() && isNotDynamicObstacle(voisinDroite, obstacles))
 				{
 					Voisins.push_back(voisinDroite);
 				}
 			}
 
-			if (a->getX() -1 < environment->getWidth()) //adjacent gauche
+			if (a->getX() -1 >= 0) //adjacent gauche
 			{
 				CellData * voisinDroite = environment->getMapData(a->getX() - 1, a->getY());
-				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle())
+				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle() && isNotDynamicObstacle(voisinDroite, obstacles))
 				{
 					Voisins.push_back(voisinDroite);
 				}
@@ -116,7 +114,7 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 			if (a->getY() + 1 < environment->getHeight()) //adjacent bas
 			{
 				CellData * voisinDroite = environment->getMapData(a->getX(), a->getY()+1);
-				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle())
+				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle() && isNotDynamicObstacle(voisinDroite, obstacles))
 				{
 					Voisins.push_back(voisinDroite);
 				}
@@ -125,7 +123,7 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 			if (a->getY() - 1 >= 0) //adjacent haut
 			{
 				CellData * voisinDroite = environment->getMapData(a->getX(), a->getY() - 1);
-				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle())
+				if (voisinDroite != NULL && voisinDroite->getIsWalkable() && !voisinDroite->getIsObstacle() && isNotDynamicObstacle(voisinDroite, obstacles))
 				{
 					Voisins.push_back(voisinDroite);
 				}
@@ -137,7 +135,7 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 			int compteur = 0;
 			float temp;
 
-			for (int i = 0; i < Voisins.size; i++)
+			for (int i = 0; i < Voisins.size(); i++)
 			{				
 				if (d[Voisins[i]] > d[a] + 1)
 				{
@@ -167,4 +165,20 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 	// s'enchainant de la position de départ à la position d'arrivée.
 
 	return path;
+}
+
+bool isNotDynamicObstacle(CellData * voisin, std::vector<Obstacle*> obstacles)
+{
+	bool isObstacle = false;
+	for (int i = 0; i < obstacles.size(); i++)
+	{
+		Obstacle * o = obstacles[i];
+		if ((*o) == (*voisin))
+		{
+			isObstacle = true;
+			break;
+		}
+	}
+
+	return !isObstacle;
 }

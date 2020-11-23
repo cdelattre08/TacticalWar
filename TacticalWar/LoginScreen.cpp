@@ -1,6 +1,8 @@
 #include "LoginScreen.h"
 #include "ScreenManager.h"
 #include "BattleScreen.h"
+#include "LinkToServer.h"
+#include "SpectatorModeScreen.h"
 
 using namespace tw;
 
@@ -11,6 +13,7 @@ float formElementHeight = 25;
 LoginScreen::LoginScreen(tgui::Gui * gui)
 {
 	readyForConnect = false;
+	this->gui = gui;
 	gui->removeAllWidgets();
 	
 	font.loadFromFile("./assets/font/neuropol_x_rg.ttf");
@@ -55,6 +58,11 @@ LoginScreen::LoginScreen(tgui::Gui * gui)
 	button->connect("pressed", [&]() { 
 		readyForConnect = true;
 	});
+
+	errorMsg = tgui::Label::create();
+	errorMsg->setInheritedFont(font);
+	errorMsg->setTextSize(formFontSize);
+	errorMsg->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
 	
 	gui->add(loginLabel, "loginLabel");
 	gui->add(login, "loginEdit");
@@ -62,6 +70,15 @@ LoginScreen::LoginScreen(tgui::Gui * gui)
 	gui->add(password, "passwordEdit");
 
 	gui->add(button, "connectBtn");
+
+	gui->add(errorMsg, "errorMsg");
+
+	LinkToServer::getInstance()->addListener(this);
+}
+
+LoginScreen::~LoginScreen()
+{
+	LinkToServer::getInstance()->removeListener(this);
 }
 
 void LoginScreen::handleEvents(sf::RenderWindow * window, tgui::Gui * gui)
@@ -84,6 +101,9 @@ void LoginScreen::handleEvents(sf::RenderWindow * window, tgui::Gui * gui)
 	password->setPosition(formX, formY + 3 * formElementHeight + 10);
 
 	btn->setPosition(formX, formY + 4 * formElementHeight + 20);
+
+	errorMsg->setSize(window->getSize().x, 40);
+	errorMsg->setPosition(0, formY + 5 * formElementHeight + 30);
 	
 
 	sf::Event event;
@@ -97,20 +117,66 @@ void LoginScreen::handleEvents(sf::RenderWindow * window, tgui::Gui * gui)
 
 	if (readyForConnect)
 	{
+		if (LinkToServer::getInstance()->Connect())
+		{
+			LinkToServer::getInstance()->Send("HG" + login->getText() + ";" + password->getText());
+			// The sentence will be treated in onMessageReceived callback.
+		}
+		else
+		{
+			messageDuration = 5;
+			errorMsg->setText("Serveur introuvable !");
+		}
+
 		readyForConnect = false;
-		gui->removeAllWidgets();
-		ScreenManager::getInstance()->setCurrentScreen(new BattleScreen(gui));
-		delete this;
 	}
 }
 
 void LoginScreen::update(float deltatime)
 {
 	Screen::update(deltatime);
+	LinkToServer::getInstance()->UpdateReceivedData();
 
+	// Reset du message d'erreur :
+	if (messageDuration > 0)
+	{
+		messageDuration -= deltatime;
+
+		if (messageDuration <= 0)
+		{
+			errorMsg->setText("");
+			messageDuration = 0;
+		}
+	}
 }
 
 void LoginScreen::render(sf::RenderWindow * window)
 {
 	window->draw(title);
+}
+
+void LoginScreen::onMessageReceived(std::string msg)
+{
+	sf::String sentence = msg;
+
+	if (sentence.substring(0, 2) == "HG")
+	{
+		readyForConnect = false;
+		gui->removeAllWidgets();
+		ScreenManager::getInstance()->setCurrentScreen(new BattleScreen(gui));
+		delete this;
+	}
+	else if (sentence.substring(0, 2) == "HS")
+	{
+		readyForConnect = false;
+		gui->removeAllWidgets();
+		ScreenManager::getInstance()->setCurrentScreen(new SpectatorModeScreen(gui));
+		delete this;
+	}
+	else
+	{
+		LinkToServer::getInstance()->Disconnect();
+		messageDuration = 5;
+		errorMsg->setText("Login ou mot de passe incorrect ...");
+	}
 }

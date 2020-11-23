@@ -40,6 +40,8 @@ namespace tw
 			return y;
 		}
 	};
+
+	
 	
 	class Pathfinder
 	{
@@ -55,5 +57,7 @@ namespace tw
 
 		Orientation getOrientationFromPosition(Position p1, Position p2);
 		std::vector<Position> getPath(Position startPosition, Position endPosition, Environment * environment, std::vector<Obstacle*> obstacles);
+		bool isNotDynamicObstacle(CellData * voisinDroite, std::vector<Obstacle*> obstacles);
+		int TotalCostFromStartToEnd();
 	};
 }

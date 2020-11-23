@@ -148,12 +148,14 @@
     <ClCompile Include="EditorEventListener.cpp" />
     <ClCompile Include="EditorUI.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SelectablePanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorEventListener.h" />
     <ClInclude Include="EditorUI.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="SelectablePanel.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EditorUI.resx">

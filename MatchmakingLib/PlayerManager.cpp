@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <deque>
+
 using namespace std;
 
 tw::Match * tw::PlayerManager::testMatch = NULL;
@@ -15,7 +16,7 @@ std::vector<tw::Player*> tw::PlayerManager::loadPlayers()
 
 	// Vous devrez remplacer les données de test par des 
 	// données chargées depuis un fichier.
-	ifstream fichierTeam("../assets/equipe.txt");
+	ifstream fichierTeam("./assets/equipe.txt");
 
 	if (fichierTeam)
 	{
@@ -24,36 +25,35 @@ std::vector<tw::Player*> tw::PlayerManager::loadPlayers()
 
 		fichierTeam >> dataFile;
 
-		vector<std::string> result = StringUtils::explode(dataFile, '/');
+		// Découpage des joueurs avec un '/'.
+		vector<std::string> equipe = StringUtils::explode(dataFile, '/');
 
-		cout << "Liste des joueurs : \n" << endl;
-		
-		for (int i = 0; i < result.size(); i++)
+		for (int i = 0; i < equipe.size(); i++)
 		{
-			cout << "joueur" << index << " : " << result[i] << endl;
-			index++;
-		}
+			int indexName = 0;
+			int indexPassword = 1;
+			int indexTeam = 2;
+			
+			int team;
 
-		vector<std::string> result1 = StringUtils::explode(dataFile, ',');
+			// Découpage des noms, password et nbTeam des joueurs avec une ','.
+			vector<std::string> result1 = StringUtils::explode(equipe[i], ',');
 
-		for (int i = 0; i < result1.size(); i++)
-		{
-			/* Enlever les '/' pour le déocupage clean.
-			if (result1[i] != '/')
-			{
-				cout << result1[i] << endl;	
-			}*/
-			cout << result1[i] << endl;
+			// Conversion d'un string en int.
+			team = std::atoi(result1[indexTeam].c_str());
+
+			// Envoie des infos au serveur.
+			result.push_back(new Player(result1[indexName], result1[indexPassword], team));
 		}
 	}
 	else {
 		cout << "Pas reussi\n" << endl;
 	}
 
-	result.push_back(new Player("J1", "P1", 1));
-	result.push_back(new Player("J2", "P2", 1));
-	result.push_back(new Player("J3", "P3", 2));
-	result.push_back(new Player("J4", "P4", 2));
+	//result.push_back(new Player("J1", "P1", 1));
+	//result.push_back(new Player("J2", "P2", 1));
+	//result.push_back(new Player("J3", "P3", 2));
+	//result.push_back(new Player("J4", "P4", 2));
 
 	return result;
 }
@@ -85,4 +85,11 @@ std::vector<tw::Match*> tw::PlayerManager::getCurrentlyPlayingMatchs()
 	}
 
 	return result;
+}
+
+void tw::PlayerManager::subscribeToAllMatchEvent(MatchEventListener * l)
+{
+	createTestMatchIfNotExists();
+
+	testMatch->addEventListener(l);
 }

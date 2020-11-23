@@ -154,5 +154,15 @@ namespace tw
 		{
 			return (currentTargetX >= 0 && currentTargetY >= 0);
 		}
+
+		inline int getTargetX()
+		{
+			return currentTargetX;
+		}
+
+		inline int getTargetY()
+		{
+			return currentTargetY;
+		}
 	};
 }

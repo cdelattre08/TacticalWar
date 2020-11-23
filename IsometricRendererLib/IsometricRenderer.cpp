@@ -125,8 +125,8 @@ sf::Vector2i IsometricRenderer::screenCoordinatesToIsoGridCoordinates(int screen
 {
 	screenY -= 30;
 
-	int calcX = floor((screenY/60) + (screenX/120));
-	int calcY = ceil((screenY/60) - (screenX/120));
+	int calcX = floor((screenY/60.0) + (screenX/120.0));
+	int calcY = ceil((screenY/60.0) - (screenX/120.0));
 	//return sf::Vector2i((screenX/120 + screenY/120)*2, (screenY / 60 - screenX/60)*2);
 	//return sf::Vector2i((screenX/120 - screenY/120)*64, (screenX/60+screenY/60)*64);
 	return sf::Vector2i(calcX, calcY);

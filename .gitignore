@@ -43,6 +43,7 @@
 *.iobj
 *.ipdb
 *.ilk
+*.lastcodeanalysissucceeded
 
 AnimationsAndSoundLib/x64/
 EnvironmentEditor/x64/

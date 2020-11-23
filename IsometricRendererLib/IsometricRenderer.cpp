@@ -60,7 +60,9 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 				int x = e.mouseButton.x;
 				int y = e.mouseButton.y;
 
-				sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(x, y);
+				sf::Vector2f unprojected = window->mapPixelToCoords(sf::Vector2i(x, y));
+				sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(unprojected.x, unprojected.y);
+				
 
 				int cellX = isoCoords.x;
 				int cellY = isoCoords.y;
@@ -106,7 +108,8 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 		sf::Vector2i position = sf::Mouse::getPosition(*window);
 		if (position.x >= 0 && position.y >= 0)
 		{
-			sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(position.x, position.y);
+			sf::Vector2f unprojected = window->mapPixelToCoords(position);
+			sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(unprojected.x, unprojected.y);
 
 			int cellX = isoCoords.x;
 			int cellY = isoCoords.y;
@@ -135,6 +138,14 @@ sf::Vector2i IsometricRenderer::screenCoordinatesToIsoGridCoordinates(int screen
 void IsometricRenderer::render(Environment* environment, std::vector<BaseCharacterModel*> & characters, float deltatime)
 {
 	manageEvents(environment, characters);
+
+	sf::View view = window->getView();
+	float centerX = environment->getWidth() / 2;
+	float centerY = environment->getHeight() / 2;
+	int viewCenterX = (centerX * 120.0 - centerY * 120.0) / 2;
+	int viewCenterY = (centerY * 60.0 + centerY * 60.0) / 2;
+	view.setCenter(viewCenterX + 60.0, viewCenterY + 30.0);
+	window->setView(view);
 
 	sf::Sprite spriteGrass;
 	sf::Sprite spriteStone;

@@ -124,7 +124,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\MatchmakingLib;..\UtilsLib;..\TacticalWarCommonLib;..\PathfindingLib;..\lib\SFML-2.5.1\include;..\TacticalWarClientCommonLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\UtilsLib;..\TacticalWarCommonLib;..\PathfindingLib;..\lib\SFML-2.5.1\include;..\TacticalWarClientCommonLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -142,7 +142,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\MatchmakingLib;..\UtilsLib;..\TacticalWarCommonLib;..\PathfindingLib;..\lib\SFML-2.5.1\include;..\TacticalWarClientCommonLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\UtilsLib;..\TacticalWarCommonLib;..\PathfindingLib;..\lib\SFML-2.5.1\include;..\TacticalWarClientCommonLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -179,9 +179,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MatchmakingLib\MatchmakingLib.vcxproj">
-      <Project>{212f22a8-d95f-460e-bd47-346bffd85c9c}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\PathfindingLib\PathfindingLib.vcxproj">
       <Project>{f579ad13-4a80-40f5-aba4-88e8e8739a71}</Project>
     </ProjectReference>

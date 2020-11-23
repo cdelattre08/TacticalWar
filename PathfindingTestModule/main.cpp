@@ -13,7 +13,7 @@ using namespace tw;
 int main(int argc, char** argv)
 {
 	int *textureLoad = 0;
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Isometric renderer test module");
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Pathfinding test module");
 	sf::Clock deltaClock;
 
 	IsometricRenderer renderer(&window);
@@ -22,26 +22,18 @@ int main(int argc, char** argv)
 
 
 
-	environment.getMapData(0, 0)->setIsObstacle(true);
-	environment.getMapData(0, 1)->setIsWalkable(false);
-	environment.getMapData(0, 2)->setIsObstacle(true);
-	environment.getMapData(0, 3)->setIsWalkable(false);
+	
 
-	environment.getMapData(1, 0)->setIsWalkable(false);
-	environment.getMapData(1, 1)->setIsObstacle(true);
-	environment.getMapData(1, 2)->setIsWalkable(false);
-	environment.getMapData(1, 3)->setIsObstacle(true);
-
-	environment.getMapData(2, 0)->setIsObstacle(true);
-	environment.getMapData(2, 1)->setIsWalkable(false);
-	environment.getMapData(2, 2)->setIsObstacle(true);
-	environment.getMapData(2, 3)->setIsWalkable(false);
+	environment.getMapData(5, 7)->setIsObstacle(true);
+	environment.getMapData(6, 7)->setIsWalkable(false);
+	environment.getMapData(7, 7)->setIsObstacle(true);
+	environment.getMapData(8, 7)->setIsWalkable(false);
 
 
-	environment.getMapData(3, 0)->setIsWalkable(false);
-	environment.getMapData(3, 1)->setIsObstacle(true);
-	environment.getMapData(3, 2)->setIsWalkable(false);
-	environment.getMapData(3, 3)->setIsObstacle(true);
+	environment.getMapData(10, 10)->setIsWalkable(false);
+	environment.getMapData(11, 11)->setIsObstacle(true);
+	environment.getMapData(12, 12)->setIsWalkable(false);
+	environment.getMapData(13, 13)->setIsObstacle(true);
 
 	TestColorator * colorator = new TestColorator();
 

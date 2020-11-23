@@ -24,17 +24,10 @@ BattleScreen::BattleScreen(tgui::Gui * gui)
 
 	font.loadFromFile("./assets/font/arial.ttf");
 	FPS.setFont(font);
-
-	tgui::Button::Ptr button = tgui::Button::create();
-	button->setText("Test");
-	gui->add(button, "connectBtn");
 }
 
 void BattleScreen::handleEvents(sf::RenderWindow * window, tgui::Gui * gui)
-{
-	tgui::Button::Ptr btn = gui->get<tgui::Button>("connectBtn");
-	btn->setPosition(window->getSize().x / 2 - btn->getSize().x / 2, window->getSize().y / 2 - btn->getSize().y / 2);
-	
+{	
 	sf::Event event;
 	while (window->pollEvent(event))
 	{

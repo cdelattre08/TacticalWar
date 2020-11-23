@@ -34,7 +34,7 @@ int Pathfinder::TotalCostFromStartToEnd() //calcul du cout total du point de dep
 	return 0;
 }
 
-Orientation Pathfinder::getOrientationFromPosition(Position p1, Position p2)
+Orientation Pathfinder::getOrientationFromPosition(Point2D p1, Point2D p2)
 {
 	// TODO : Implémenter le calcul de l'orientation du personnage à partir des positions passées en paramètres.
 	// Les positions passées en paramètre représentent le mouvement du personnage de p1 vers p2.
@@ -42,9 +42,9 @@ Orientation Pathfinder::getOrientationFromPosition(Position p1, Position p2)
 	return Orientation::BOTTOM_RIGHT;
 }
 
-std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPosition, Environment * environment, std::vector<Obstacle*> obstacles)
+std::vector<Point2D> Pathfinder::getPath(Point2D startPosition, Point2D endPosition, Environment * environment, std::vector<Obstacle*> obstacles)
 {
-	std::vector<Position> path;
+	std::vector<Point2D> path;
 	std::map<CellData*, CellData*> Predecesseur;
 	std::vector<CellData*> P;
 	std::map<CellData*, float> d;
@@ -56,11 +56,20 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 		{
 			CellData * cell = environment->getMapData(i, j);
 
-			if (!cell->getIsObstacle() && cell->getIsWalkable())
+			d[cell] = std::numeric_limits<float>::max(); //sommet à +infini
+			
+
+			if (cell->getIsObstacle() || !cell->getIsWalkable())
 			{
-				d[cell] = std::numeric_limits<float>::max(); //sommet à +infini
+				P.push_back(cell);
 			}
 		}
+	}
+
+	for (int i = 0; i < obstacles.size(); i++)
+	{
+		Obstacle * o = obstacles[i];
+		P.push_back(environment->getMapData(o->getX(), o->getY()));
 	}
 
 	d[environment->getMapData(startPosition.getX(), startPosition.getY())] = 0;
@@ -70,6 +79,7 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 
 	while(P.size() != d.size())	//on itère tant que qu'il existe un sommet hors de P donc tant que P ne fait pas la même taille que le nombre total de sommets
 	{
+		PlusCourteDistance = std::numeric_limits<float>::max();
 		CellData * a = NULL;
 		for (int i = 0; i < environment->getWidth(); i++)
 		{
@@ -153,7 +163,7 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 
 	while (currentCell != startCell)
 	{
-		path.push_back(tw::Position(currentCell->getX(), currentCell->getY()));
+		path.push_back(tw::Point2D(currentCell->getX(), currentCell->getY()));
 		currentCell = Predecesseur[currentCell];
 	}
 
@@ -167,7 +177,7 @@ std::vector<Position> Pathfinder::getPath(Position startPosition, Position endPo
 	return path;
 }
 
-bool isNotDynamicObstacle(CellData * voisin, std::vector<Obstacle*> obstacles)
+bool Pathfinder::isNotDynamicObstacle(CellData * voisin, std::vector<Obstacle*> obstacles)
 {
 	bool isObstacle = false;
 	for (int i = 0; i < obstacles.size(); i++)

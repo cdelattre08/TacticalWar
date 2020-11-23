@@ -6,6 +6,7 @@
 #include <BaseCharacterModel.h>
 #include <Environment.h>
 #include <vector>
+#include <EnvironmentManager.h>
 #include <Windows.h>
 #include "SelectablePanel.h"
 
@@ -17,6 +18,7 @@ namespace EnvironmentEditor {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace std;
 
 	/// <summary>
 	/// Description résumée de EditorUI
@@ -29,6 +31,31 @@ namespace EnvironmentEditor {
 		tw::Environment * environment;
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::Windows::Forms::GroupBox^  actionsGroupBox;
+
+
+
+	private: System::Windows::Forms::GroupBox^  groupBox1;
+	private: System::Windows::Forms::RadioButton^  SelectorObstacle;
+
+	private: System::Windows::Forms::RadioButton^  SelectorTrou;
+
+	private: System::Windows::Forms::RadioButton^  SelectorSol;
+	private: System::Windows::Forms::RadioButton^  SelectorEquipe2;
+
+	private: System::Windows::Forms::RadioButton^  SelectorEquipe1;
+
+	private: System::Windows::Forms::Button^  button3;
+	private: System::Windows::Forms::Button^  button2;
+	private: System::Windows::Forms::Button^  button1;
+
+
+
+
+
+
+
+
+
 
 			 std::vector<tw::BaseCharacterModel*> * characters;
 
@@ -47,21 +74,49 @@ namespace EnvironmentEditor {
 		{
 			InitializeComponent();
 
+			SelectorSol->Select();
+
 			window = new sf::RenderWindow((sf::WindowHandle)sfmlRenderingSurface->Handle.ToInt32());
 			renderer = new tw::IsometricRenderer(window);
 			environment = new tw::Environment(15, 15, 0);
 			environment->getMapData(1, 1)->setIsObstacle(true);
 			environment->getMapData(2, 2)->setIsWalkable(false);
+			environment->getMapData(2, 2)->setTeamStartPoint(true);
+
 			characters = new std::vector<tw::BaseCharacterModel*>();
 
 			eventListener = new EditorEventListener(this);
 			renderer->addEventListener(eventListener);
 		}
-
+		//Cellule & Equipe
 		void editCell(int x, int y)
 		{
-			environment->getMapData(x, y)->setIsObstacle(true);
+			if (SelectorSol->Checked)
+			{
+				environment->getMapData(x, y)->setIsObstacle(false);
+				environment->getMapData(x, y)->setIsWalkable(true);
+			}
+			else if (SelectorTrou->Checked)
+			{
+				environment->getMapData(x, y)->setIsObstacle(false);
+				environment->getMapData(x, y)->setIsWalkable(false);
+			}
+			else if (SelectorObstacle->Checked)
+			{
+				environment->getMapData(x, y)->setIsObstacle(true);
+				environment->getMapData(x, y)->setIsWalkable(false);
+			}
+			else if (SelectorEquipe1->Checked)
+			{
+				environment->getMapData(x, y)->setTeamStartPoint(1);
+			}
+			else if (SelectorEquipe2->Checked)
+			{
+				environment->getMapData(x, y)->setTeamStartPoint(2);
+			}
 		}
+
+		
 
 	protected:
 		/// <summary>
@@ -95,6 +150,17 @@ namespace EnvironmentEditor {
 			this->sfmlRenderingSurface = (gcnew SelectablePanel());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->actionsGroupBox = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->SelectorEquipe2 = (gcnew System::Windows::Forms::RadioButton());
+			this->SelectorObstacle = (gcnew System::Windows::Forms::RadioButton());
+			this->SelectorEquipe1 = (gcnew System::Windows::Forms::RadioButton());
+			this->SelectorTrou = (gcnew System::Windows::Forms::RadioButton());
+			this->SelectorSol = (gcnew System::Windows::Forms::RadioButton());
+			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->actionsGroupBox->SuspendLayout();
+			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// sfmlRenderingSurface
@@ -116,6 +182,10 @@ namespace EnvironmentEditor {
 			// 
 			// actionsGroupBox
 			// 
+			this->actionsGroupBox->Controls->Add(this->groupBox1);
+			this->actionsGroupBox->Controls->Add(this->button3);
+			this->actionsGroupBox->Controls->Add(this->button2);
+			this->actionsGroupBox->Controls->Add(this->button1);
 			this->actionsGroupBox->Dock = System::Windows::Forms::DockStyle::Left;
 			this->actionsGroupBox->Location = System::Drawing::Point(0, 0);
 			this->actionsGroupBox->Name = L"actionsGroupBox";
@@ -123,6 +193,107 @@ namespace EnvironmentEditor {
 			this->actionsGroupBox->TabIndex = 1;
 			this->actionsGroupBox->TabStop = false;
 			this->actionsGroupBox->Text = L"Actions :";
+			this->actionsGroupBox->Enter += gcnew System::EventHandler(this, &EditorUI::actionsGroupBox_Enter);
+			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->SelectorEquipe2);
+			this->groupBox1->Controls->Add(this->SelectorObstacle);
+			this->groupBox1->Controls->Add(this->SelectorEquipe1);
+			this->groupBox1->Controls->Add(this->SelectorTrou);
+			this->groupBox1->Controls->Add(this->SelectorSol);
+			this->groupBox1->Location = System::Drawing::Point(12, 137);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(250, 176);
+			this->groupBox1->TabIndex = 3;
+			this->groupBox1->TabStop = false;
+			this->groupBox1->Text = L"Type de cellule";
+			// 
+			// SelectorEquipe2
+			// 
+			this->SelectorEquipe2->AutoSize = true;
+			this->SelectorEquipe2->Location = System::Drawing::Point(25, 143);
+			this->SelectorEquipe2->Name = L"SelectorEquipe2";
+			this->SelectorEquipe2->Size = System::Drawing::Size(67, 17);
+			this->SelectorEquipe2->TabIndex = 1;
+			this->SelectorEquipe2->TabStop = true;
+			this->SelectorEquipe2->Text = L"Equipe 2";
+			this->SelectorEquipe2->UseVisualStyleBackColor = true;
+			// 
+			// SelectorObstacle
+			// 
+			this->SelectorObstacle->AutoSize = true;
+			this->SelectorObstacle->Location = System::Drawing::Point(25, 79);
+			this->SelectorObstacle->Name = L"SelectorObstacle";
+			this->SelectorObstacle->Size = System::Drawing::Size(67, 17);
+			this->SelectorObstacle->TabIndex = 2;
+			this->SelectorObstacle->TabStop = true;
+			this->SelectorObstacle->Text = L"Obstacle";
+			this->SelectorObstacle->UseVisualStyleBackColor = true;
+			// 
+			// SelectorEquipe1
+			// 
+			this->SelectorEquipe1->AutoSize = true;
+			this->SelectorEquipe1->Location = System::Drawing::Point(25, 120);
+			this->SelectorEquipe1->Name = L"SelectorEquipe1";
+			this->SelectorEquipe1->Size = System::Drawing::Size(67, 17);
+			this->SelectorEquipe1->TabIndex = 0;
+			this->SelectorEquipe1->TabStop = true;
+			this->SelectorEquipe1->Text = L"Equipe 1";
+			this->SelectorEquipe1->UseVisualStyleBackColor = true;
+			// 
+			// SelectorTrou
+			// 
+			this->SelectorTrou->AutoSize = true;
+			this->SelectorTrou->Location = System::Drawing::Point(25, 55);
+			this->SelectorTrou->Name = L"SelectorTrou";
+			this->SelectorTrou->Size = System::Drawing::Size(47, 17);
+			this->SelectorTrou->TabIndex = 1;
+			this->SelectorTrou->TabStop = true;
+			this->SelectorTrou->Text = L"Trou";
+			this->SelectorTrou->UseVisualStyleBackColor = true;
+			this->SelectorTrou->CheckedChanged += gcnew System::EventHandler(this, &EditorUI::SelectorTrou_CheckedChanged);
+			// 
+			// SelectorSol
+			// 
+			this->SelectorSol->AutoSize = true;
+			this->SelectorSol->Location = System::Drawing::Point(25, 31);
+			this->SelectorSol->Name = L"SelectorSol";
+			this->SelectorSol->Size = System::Drawing::Size(40, 17);
+			this->SelectorSol->TabIndex = 0;
+			this->SelectorSol->TabStop = true;
+			this->SelectorSol->Text = L"Sol";
+			this->SelectorSol->UseVisualStyleBackColor = true;
+			this->SelectorSol->CheckedChanged += gcnew System::EventHandler(this, &EditorUI::SelectorSol_CheckedChanged);
+			// 
+			// button3
+			// 
+			this->button3->Location = System::Drawing::Point(197, 46);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(75, 38);
+			this->button3->TabIndex = 2;
+			this->button3->Text = L"Nouvelle map";
+			this->button3->UseVisualStyleBackColor = true;
+			// 
+			// button2
+			// 
+			this->button2->Location = System::Drawing::Point(12, 73);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(75, 23);
+			this->button2->TabIndex = 1;
+			this->button2->Text = L"Sauvegarde";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &EditorUI::button2_Click);
+			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(12, 32);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(75, 23);
+			this->button1->TabIndex = 0;
+			this->button1->Text = L"Chargement";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &EditorUI::button1_Click);
 			// 
 			// EditorUI
 			// 
@@ -133,6 +304,9 @@ namespace EnvironmentEditor {
 			this->Controls->Add(this->actionsGroupBox);
 			this->Name = L"EditorUI";
 			this->Text = L"EditorUI";
+			this->actionsGroupBox->ResumeLayout(false);
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -149,14 +323,44 @@ namespace EnvironmentEditor {
 	private: System::Void sfmlRenderingSurface_Resize(System::Object^  sender, System::EventArgs^  e) {
 		reinitializeRenderer();
 	}
-			 void OnGotFocus(System::Object ^sender, System::EventArgs ^e)
-			 {
-				 renderer->forceFocus();
-			 }
-			 void OnLostFocus(System::Object ^sender, System::EventArgs ^e)
-			 {
-				 renderer->forceUnfocus();
-			 }
+
+private: System::Void actionsGroupBox_Enter(System::Object^  sender, System::EventArgs^  e) {
+
+}
+private: System::Void menuStrip1_ItemClicked(System::Object^  sender, System::Windows::Forms::ToolStripItemClickedEventArgs^  e) {
+}
+private: System::Void menuStrip2_ItemClicked(System::Object^  sender, System::Windows::Forms::ToolStripItemClickedEventArgs^  e) {
+}
+
+private: System::Void SelectorSol_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void SelectorTrou_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+	//tw::EnvironmentManager::getInstance()->saveEnvironment(environment);
+
+
+
+}
+
+private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+	tw::EnvironmentManager::getInstance()->saveEnvironment(environment);
+	
+	
+
+}
+
+
+		void OnGotFocus(System::Object ^sender, System::EventArgs ^e)
+		{
+			renderer->forceFocus();
+		}
+		void OnLostFocus(System::Object ^sender, System::EventArgs ^e)
+		{
+			renderer->forceUnfocus();
+		}
+
 };
 }
 

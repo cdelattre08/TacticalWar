@@ -40,6 +40,14 @@ void BattleScreen::handleEvents(sf::RenderWindow * window, tgui::Gui * gui)
 	{
 		if (event.type == sf::Event::Closed)
 			window->close();
+		else if (event.type == sf::Event::Resized)
+		{
+			int sizeX = event.size.width;
+			int sizeY = event.size.height;
+			sf::View view = window->getView();
+			view.setSize(event.size.width, event.size.height);
+			window->setView(view);
+		}
 
 		gui->handleEvent(event);
 	}	

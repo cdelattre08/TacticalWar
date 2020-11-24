@@ -80,6 +80,8 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 		default:
 			break;
 		}
+
+		notifyEvent(&e);
 	}
 
 	// Gestion du focus :
@@ -215,13 +217,13 @@ void IsometricRenderer::render(Environment* environment, std::vector<BaseCharact
 		int isoX = (m->getInterpolatedX() * 120 - m->getInterpolatedY() * 120) / 2;
 		int isoY = (m->getInterpolatedX() * 60 + m->getInterpolatedY() * 60) / 2;
 
-		s->setPosition(isoX + 60, isoY - 7);
+		s->setPosition(isoX + 60, isoY - 30 + 10);
 	
 
 		sf::IntRect rect = s->getTextureRect();
 		bool flipped = s->getScale().x < 0;
-		float scaleX = 64.0 / (float)rect.width;
-		float scaleY = 64.0 / (float)rect.height;
+		float scaleX = 0.4;
+		float scaleY = 0.4;
 		s->setScale(flipped ? -scaleX : scaleX, scaleY);
 		window->draw(*s);
 	}

@@ -1,10 +1,14 @@
 #include "BattleScreen.h"
 #include "TestCharacterModel.h"
+#include <Pathfinder.h>
 
 using namespace tw;
 
 BattleScreen::BattleScreen(tgui::Gui * gui)
 {
+	this->gui = NULL;
+	this->window = NULL;
+	
 	gui->removeAllWidgets();
 	
 	renderer = new IsometricRenderer(NULL);
@@ -15,12 +19,9 @@ BattleScreen::BattleScreen(tgui::Gui * gui)
 	colorator = new TWColorator(sf::Color(40, 200, 255));
 
 	renderer->setColorator(colorator);
+	renderer->addEventListener(this);
 
 	characters.push_back(new TestCharacterModel(environment, 0, 0, 0));
-	XDirection = true;
-	YDirection = true;
-	testDirection = false;
-	setNextPosition();
 
 	font.loadFromFile("./assets/font/arial.ttf");
 	FPS.setFont(font);
@@ -28,6 +29,9 @@ BattleScreen::BattleScreen(tgui::Gui * gui)
 
 void BattleScreen::handleEvents(sf::RenderWindow * window, tgui::Gui * gui)
 {	
+	this->window = window;
+	this->gui = gui;
+	/*
 	sf::Event event;
 	while (window->pollEvent(event))
 	{
@@ -44,6 +48,7 @@ void BattleScreen::handleEvents(sf::RenderWindow * window, tgui::Gui * gui)
 
 		gui->handleEvent(event);
 	}	
+	*/
 }
 
 void BattleScreen::update(float deltatime)
@@ -57,7 +62,7 @@ void BattleScreen::update(float deltatime)
 
 		if (!characters[i]->hasTargetPosition())
 		{
-			setNextPosition();
+			//setNextPosition();
 		}
 
 		int x = characters[i]->getCurrentX();
@@ -82,3 +87,52 @@ void BattleScreen::render(sf::RenderWindow * window)
 	renderer->render(environment, characters, getDeltatime());
 	window->draw(FPS);
 }
+
+// Renderer Event Listener
+void BattleScreen::onCellClicked(int cellX, int cellY)
+{
+	std::cout << "Cell x=" << cellX << ", y=" << cellY << " clicked !" << std::endl;
+	BaseCharacterModel * m = characters[0];
+	if (!m->hasTargetPosition())
+	{
+		Point2D startPosition(m->getCurrentX(), m->getCurrentY());
+		Point2D targetPosition(cellX, cellY);
+
+		std::vector<Point2D> path = Pathfinder::getInstance()->getPath(startPosition, targetPosition, environment, std::vector<Obstacle*>());
+		m->setPath(path);
+	}
+}
+
+void BattleScreen::onCellHover(int cellX, int cellY)
+{
+
+}
+
+void BattleScreen::onCellMouseDown(int cellX, int cellY)
+{
+
+}
+
+void BattleScreen::onEvent(void * e)
+{
+	if (e != NULL)
+	{
+		sf::Event * event = (sf::Event*)e;
+
+		if (event->type == sf::Event::Resized)
+		{
+			if (window != NULL)
+			{
+				int sizeX = event->size.width;
+				int sizeY = event->size.height;
+				sf::View view = window->getView();
+				view.setSize(event->size.width, event->size.height);
+				window->setView(view);
+			}
+		}
+
+		if(gui != NULL)
+			gui->handleEvent(*event);
+	}
+}
+//----------------------------------------------------------

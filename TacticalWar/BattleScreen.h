@@ -63,6 +63,7 @@ namespace tw
 
 		sf::RenderWindow * window;
 		tgui::Gui * gui;
+		std::vector<Point2D> pathZone;
 
 	public:
 		BattleScreen(tgui::Gui * gui);

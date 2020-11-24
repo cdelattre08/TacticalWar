@@ -32,18 +32,18 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 		// check the type of the event...
 		switch (e.type)
 		{
-		/*
-		case sf::Event::LostFocus:
-			std::cout << "Lost focus" << std::endl;
-			hasFocus = false;
-			break;
+			/*
+			case sf::Event::LostFocus:
+				std::cout << "Lost focus" << std::endl;
+				hasFocus = false;
+				break;
 
-		case sf::Event::GainedFocus:
-			std::cout << "Gain focus" << std::endl;
-			hasFocus = true;
-			
-			break;
-		*/
+			case sf::Event::GainedFocus:
+				std::cout << "Gain focus" << std::endl;
+				hasFocus = true;
+
+				break;
+			*/
 			// window closed
 		case sf::Event::Closed:
 			window->close();
@@ -51,7 +51,7 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 
 			// key pressed
 		case sf::Event::KeyPressed:
-			
+
 			break;
 
 		case sf::Event::MouseButtonPressed:
@@ -62,7 +62,7 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 
 				sf::Vector2f unprojected = window->mapPixelToCoords(sf::Vector2i(x, y));
 				sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(unprojected.x, unprojected.y);
-				
+
 
 				int cellX = isoCoords.x;
 				int cellY = isoCoords.y;
@@ -71,7 +71,7 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 					&&
 					cellY >= 0 && cellY < environment->getHeight())
 				{
-					if(hasFocus)
+					if (hasFocus)
 						notifyCellClicked(cellX, cellY);
 				}
 			}
@@ -105,27 +105,32 @@ void IsometricRenderer::manageEvents(Environment * environment, std::vector<Base
 		}
 	}
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	sf::Vector2i position = sf::Mouse::getPosition(*window);
+	if (position.x >= 0 && position.y >= 0)
 	{
-		sf::Vector2i position = sf::Mouse::getPosition(*window);
-		if (position.x >= 0 && position.y >= 0)
+		sf::Vector2f unprojected = window->mapPixelToCoords(position);
+		sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(unprojected.x, unprojected.y);
+
+		int cellX = isoCoords.x;
+		int cellY = isoCoords.y;
+
+		if (cellX >= 0 && cellX < environment->getWidth()
+			&&
+			cellY >= 0 && cellY < environment->getHeight())
 		{
-			sf::Vector2f unprojected = window->mapPixelToCoords(position);
-			sf::Vector2i isoCoords = screenCoordinatesToIsoGridCoordinates(unprojected.x, unprojected.y);
-
-			int cellX = isoCoords.x;
-			int cellY = isoCoords.y;
-
-			if (cellX >= 0 && cellX < environment->getWidth()
-				&&
-				cellY >= 0 && cellY < environment->getHeight())
+			if (hasFocus)
 			{
-				if (hasFocus)
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				{
 					notifyCellMouseDown(cellX, cellY);
+				}
+
+				notifyCellHover(cellX, cellY);
 			}
-		}
+		}		
 	}
 }
+	
 sf::Vector2i IsometricRenderer::screenCoordinatesToIsoGridCoordinates(int screenX, int screenY)
 {
 	screenY -= 30;

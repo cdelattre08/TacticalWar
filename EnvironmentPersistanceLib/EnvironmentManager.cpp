@@ -2,7 +2,10 @@
 #include "EnvironmentManager.h"
 #include <stdlib.h>
 #include <iostream>
+#include <SFML/System/FileInputStream.hpp>
 #include <stdio.h>
+#include <vector>
+#include <StringUtils.h>
 //#include <fstream>
 #pragma warning(disable : 4996)
 #define TAILLE_MAX 1000 // Tableau de taille 1000
@@ -47,6 +50,19 @@ tw::Environment * tw::EnvironmentManager::loadEnvironment(int environmentId)
 {
 	// Equipe éditeur de map : Il faudra charger les données depuis le fichier environmentId.txt
 	// situé dans le dossier /assets/map/ et construire une variable de type Environment que vous retournerez.
+
+	/*FILE *fichier;
+	fichier = fopen("./assets/map/map.txt", "r");
+	if (fichier != NULL)
+	{
+		for (int i = 0; i < ; i++)
+		{
+			fscanf(fichier, "%d\n", );
+		}
+	}
+	
+	fclose(fichier);
+	*/
 	
 	createTestEnvironmentIfNotExists();
 	return testEnvironment;
@@ -57,14 +73,23 @@ void tw::EnvironmentManager::saveEnvironment(Environment * environment)
 	// Equipe éditeur de map : Il faudra enregistrer dans un fichier la map
 	// passée en paramètre dans le dossier /assets/map/.
 	// L'extension du fichier sera .txt
-	FILE* fichier = NULL;
-	fichier = fopen("C:\\assets\\map\\map.txt", "w+");
-
-	if (fichier != NULL)
-	{
-		fputc('A', fichier); // Écriture du caractère A
-		fclose(fichier);
-	}
 	
+
+	FILE *fichier;
+	fichier = fopen("./assets/map/map.txt", "w");
+	fprintf(fichier, "%d\n", environment->getId());
+	fprintf(fichier, "%d\n", environment->getHeight());
+	fprintf(fichier, "%d\n", environment->getWidth());
+	for (int i = 0; i < environment->getHeight(); i++) 
+	{
+
+		for (int x = 0; x < environment->getWidth(); x++) 
+		{
+			CellData * cell = environment->getMapData(x, i);
+			fprintf(fichier, "%d,%d,%d,%d\n", cell->getX(), cell->getY(),cell->getIsObstacle(), cell->getIsWalkable());
+		}
+
+	}
+	fclose(fichier);
 
 }

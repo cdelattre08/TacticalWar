@@ -348,18 +348,16 @@ private: System::Void SelectorSol_CheckedChanged(System::Object^  sender, System
 private: System::Void SelectorTrou_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 }
 
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-	//tw::EnvironmentManager::getInstance()->saveEnvironment(environment);
-
-
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) 
+{
+//	tw::EnvironmentManager::getInstance()->loadEnvironment();
 
 }
 
-private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) 
+{
 	tw::EnvironmentManager::getInstance()->saveEnvironment(environment);
 	
-	
-
 }
 
 
